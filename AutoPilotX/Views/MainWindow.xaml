@@ -19,32 +19,34 @@
             <Button Content="AutoPilotX" IsEnabled="False"/>
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
-    <tb:TaskbarIcon x:Name="NotifyIcon"
-                    IconSource="/Resources/Icons/icon.ico"
-                    ToolTipText="AutoPilotX"
-                    TrayMouseDoubleClick="NotifyIcon_TrayMouseDoubleClick">
-        <tb:TaskbarIcon.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Open" Click="Open_Click"/>
-                <MenuItem Header="Exit" Click="Exit_Click"/>
-            </ContextMenu>
-        </tb:TaskbarIcon.ContextMenu>
-    </tb:TaskbarIcon>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <TabControl Grid.Column="0" Style="{StaticResource MahApps.Styles.TabControl.Animated}" TabStripPlacement="Left">
-            <TabItem Header="Auto Clicker">
-                <local:AutoClickerView/>
-            </TabItem>
-            <TabItem Header="Macro Recorder">
-                <local:MacroView/>
-            </TabItem>
-            <TabItem Header="Settings">
-                <local:SettingsView/>
-            </TabItem>
-        </TabControl>
+        <tb:TaskbarIcon x:Name="NotifyIcon"
+                        IconSource="/Resources/Icons/icon.ico"
+                        ToolTipText="AutoPilotX"
+                        TrayMouseDoubleClick="NotifyIcon_TrayMouseDoubleClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open" Click="Open_Click"/>
+                    <MenuItem Header="Exit" Click="Exit_Click"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TabControl Grid.Column="0" Style="{StaticResource MahApps.Styles.TabControl.Animated}" TabStripPlacement="Left">
+                <TabItem Header="Auto Clicker">
+                    <local:AutoClickerView/>
+                </TabItem>
+                <TabItem Header="Macro Recorder">
+                    <local:MacroView/>
+                </TabItem>
+                <TabItem Header="Settings">
+                    <local:SettingsView/>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </mah:MetroWindow>
