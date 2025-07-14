@@ -8,6 +8,8 @@ using AutoPilotX.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace AutoPilotX.ViewModels
 {

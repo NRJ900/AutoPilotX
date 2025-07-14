@@ -5,6 +5,7 @@ using System.Windows.Media;
 using AutoPilotX.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using WindowsInput;
 using WindowsInput.Native;
 
 namespace AutoPilotX.ViewModels
