@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources/Icons/icon.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
@@ -13,11 +13,10 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="Gma.System.MouseKeyHook" Version="5.7.1" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
-    <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.3.0" />
-    <PackageReference Include="WindowsInput" Version="1.0.6" />
+    <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0429" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="0.4.0" />
+    <PackageReference Include="NHotkey.Wpf" Version="2.1.0" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
   </ItemGroup>
 

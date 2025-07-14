@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoPilotX.Models;
-using Gma.System.MouseKeyHook;
+using MouseKeyHook;
 using WindowsInput;
 using WindowsInput.Native;
 
