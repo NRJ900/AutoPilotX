@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using WindowsInput.Native;
 
 namespace AutoPilotX.Services
 {
-    public class KeyPresserService
+    public class KeyPresserService : IDisposable
     {
         private readonly InputSimulator _inputSimulator;
         private CancellationTokenSource _cancellationTokenSource;
@@ -27,7 +28,14 @@ namespace AutoPilotX.Services
                 {
                     foreach (var key in keys)
                     {
-                        _inputSimulator.Keyboard.KeyPress(key);
+                        try
+                        {
+                            _inputSimulator.Keyboard.KeyPress(key);
+                        }
+                        catch (Exception)
+                        {
+                            // Ignore input simulation errors
+                        }
                         await Task.Delay(delay, token);
                     }
                 }
@@ -37,6 +45,11 @@ namespace AutoPilotX.Services
         public void StopPressing()
         {
             _cancellationTokenSource?.Cancel();
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource?.Dispose();
         }
     }
 }

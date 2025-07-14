@@ -22,9 +22,9 @@ namespace AutoPilotX.ViewModels
         [ObservableProperty]
         private bool _isDarkMode;
 
-        public SettingsViewModel()
+        public SettingsViewModel(SettingsService settingsService)
         {
-            _settingsService = new SettingsService();
+            _settingsService = settingsService;
             Settings = _settingsService.LoadSettings();
             IsDarkMode = Settings.Theme == "Dark";
             SaveSettingsCommand = new RelayCommand(SaveSettings);
@@ -36,6 +36,7 @@ namespace AutoPilotX.ViewModels
         {
             Settings.Theme = IsDarkMode ? "Dark" : "Light";
             _settingsService.SaveSettings(Settings);
+            _settingsService.SetStartup(Settings.StartWithWindows);
             ThemeManager.Current.ChangeTheme(Application.Current, $"{Settings.Theme}.Blue");
         }
     }

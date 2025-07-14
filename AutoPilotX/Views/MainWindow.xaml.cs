@@ -1,4 +1,5 @@
 using System.Windows;
+using AutoPilotX.ViewModels;
 using MahApps.Metro.Controls;
 
 namespace AutoPilotX.Views
@@ -8,9 +9,13 @@ namespace AutoPilotX.Views
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel, AutoClickerViewModel autoClickerViewModel, MacroViewModel macroViewModel, SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
+            DataContext = mainViewModel;
+            AutoClickerView.DataContext = autoClickerViewModel;
+            MacroView.DataContext = macroViewModel;
+            SettingsView.DataContext = settingsViewModel;
         }
 
         private void MetroWindow_StateChanged(object sender, System.EventArgs e)
@@ -18,7 +23,10 @@ namespace AutoPilotX.Views
             if (WindowState == WindowState.Minimized)
             {
                 Hide();
-                NotifyIcon.Visibility = Visibility.Visible;
+                if (FindResource("NotifyIcon") is System.Windows.Forms.NotifyIcon notifyIcon)
+                {
+                    notifyIcon.Visible = true;
+                }
             }
         }
 
@@ -26,14 +34,20 @@ namespace AutoPilotX.Views
         {
             Show();
             WindowState = WindowState.Normal;
-            NotifyIcon.Visibility = Visibility.Collapsed;
+            if (FindResource("NotifyIcon") is System.Windows.Forms.NotifyIcon notifyIcon)
+            {
+                notifyIcon.Visible = false;
+            }
         }
 
         private void Open_Click(object sender, RoutedEventArgs e)
         {
             Show();
             WindowState = WindowState.Normal;
-            NotifyIcon.Visibility = Visibility.Collapsed;
+            if (FindResource("NotifyIcon") is System.Windows.Forms.NotifyIcon notifyIcon)
+            {
+                notifyIcon.Visible = false;
+            }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

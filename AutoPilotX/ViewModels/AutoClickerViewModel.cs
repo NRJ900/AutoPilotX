@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -8,9 +9,10 @@ using WindowsInput.Native;
 
 namespace AutoPilotX.ViewModels
 {
-    public partial class AutoClickerViewModel : ObservableObject
+    public partial class AutoClickerViewModel : ObservableObject, IDisposable
     {
         private readonly ClickerService _clickerService;
+        private bool _disposed;
 
         [ObservableProperty]
         private bool _isEnabled;
@@ -24,7 +26,7 @@ namespace AutoPilotX.ViewModels
         };
 
         [ObservableProperty]
-        private VirtualKeyCode _selectedClickType;
+        private VirtualKeyCode _selectedClickType = VirtualKeyCode.LBUTTON;
 
         [ObservableProperty]
         private int _interval = 100;
@@ -32,9 +34,9 @@ namespace AutoPilotX.ViewModels
         [ObservableProperty]
         private Brush _statusColor = Brushes.Red;
 
-        public AutoClickerViewModel()
+        public AutoClickerViewModel(ClickerService clickerService)
         {
-            _clickerService = new ClickerService();
+            _clickerService = clickerService;
             StartClickerCommand = new RelayCommand(StartClicker, () => IsEnabled);
             StopClickerCommand = new RelayCommand(StopClicker);
         }
@@ -53,5 +55,14 @@ namespace AutoPilotX.ViewModels
             _clickerService.StopClicking();
             StatusColor = Brushes.Red;
         }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _clickerService.Dispose();
+            _disposed = true;
+        }
+
+        ~AutoClickerViewModel() => Dispose();
     }
 }

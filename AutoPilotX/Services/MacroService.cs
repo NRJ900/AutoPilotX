@@ -10,11 +10,12 @@ using WindowsInput.Native;
 
 namespace AutoPilotX.Services
 {
-    public class MacroService
+    public class MacroService : IDisposable
     {
         private readonly IKeyboardMouseEvents _globalHook;
         private readonly InputSimulator _inputSimulator;
         private readonly List<MacroEvent> _macroEvents;
+        private readonly object _macroEventsLock = new object();
         private readonly Stopwatch _stopwatch;
         private bool _isRecording;
         private CancellationTokenSource _cancellationTokenSource;
@@ -29,9 +30,12 @@ namespace AutoPilotX.Services
 
         public void StartRecording()
         {
-            _macroEvents.Clear();
+            lock (_macroEventsLock)
+            {
+                _macroEvents.Clear();
+            }
             _isRecording = true;
-            _stopwatch.Start();
+            _stopwatch.Restart();
             _globalHook.MouseMove += OnMouseMove;
             _globalHook.MouseDown += OnMouseDown;
             _globalHook.MouseUp += OnMouseUp;
@@ -67,23 +71,30 @@ namespace AutoPilotX.Services
                     if (delay > 0)
                         await Task.Delay(delay, token);
 
-                    switch (macroEvent.EventType)
+                    try
                     {
-                        case MacroEventType.MouseMove:
-                            _inputSimulator.Mouse.MoveMouseTo(macroEvent.X, macroEvent.Y);
-                            break;
-                        case MacroEventType.MouseDown:
-                            _inputSimulator.Mouse.MouseDown((MouseButton)macroEvent.KeyCode);
-                            break;
-                        case MacroEventType.MouseUp:
-                            _inputSimulator.Mouse.MouseUp((MouseButton)macroEvent.KeyCode);
-                            break;
-                        case MacroEventType.KeyDown:
-                            _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)macroEvent.KeyCode);
-                            break;
-                        case MacroEventType.KeyUp:
-                            _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)macroEvent.KeyCode);
-                            break;
+                        switch (macroEvent.EventType)
+                        {
+                            case MacroEventType.MouseMove:
+                                _inputSimulator.Mouse.MoveMouseTo(macroEvent.X, macroEvent.Y);
+                                break;
+                            case MacroEventType.MouseDown:
+                                _inputSimulator.Mouse.MouseDown((MouseButton)macroEvent.KeyCode);
+                                break;
+                            case MacroEventType.MouseUp:
+                                _inputSimulator.Mouse.MouseUp((MouseButton)macroEvent.KeyCode);
+                                break;
+                            case MacroEventType.KeyDown:
+                                _inputSimulator.Keyboard.KeyDown((VirtualKeyCode)macroEvent.KeyCode);
+                                break;
+                            case MacroEventType.KeyUp:
+                                _inputSimulator.Keyboard.KeyUp((VirtualKeyCode)macroEvent.KeyCode);
+                                break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Ignore input simulation errors
                     }
 
                     lastTimestamp = macroEvent.Timestamp;
@@ -99,62 +110,81 @@ namespace AutoPilotX.Services
         private void OnMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (!_isRecording) return;
-            _macroEvents.Add(new MacroEvent
+            var abs = System.Windows.Forms.Cursor.Position;
+            lock (_macroEventsLock)
             {
-                EventType = MacroEventType.MouseMove,
-                X = e.X,
-                Y = e.Y,
-                Timestamp = _stopwatch.ElapsedMilliseconds
-            });
+                _macroEvents.Add(new MacroEvent
+                {
+                    EventType = MacroEventType.MouseMove,
+                    X = abs.X,
+                    Y = abs.Y,
+                    Timestamp = _stopwatch.ElapsedMilliseconds
+                });
+            }
         }
 
         private void OnMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (!_isRecording) return;
-            _macroEvents.Add(new MacroEvent
+            lock (_macroEventsLock)
             {
-                EventType = MacroEventType.MouseDown,
-                KeyCode = (int)e.Button,
-                Timestamp = _stopwatch.ElapsedMilliseconds
-            });
+                _macroEvents.Add(new MacroEvent
+                {
+                    EventType = MacroEventType.MouseDown,
+                    KeyCode = (int)e.Button,
+                    Timestamp = _stopwatch.ElapsedMilliseconds
+                });
+            }
         }
 
         private void OnMouseUp(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (!_isRecording) return;
-            _macroEvents.Add(new MacroEvent
+            lock (_macroEventsLock)
             {
-                EventType = MacroEventType.MouseUp,
-                KeyCode = (int)e.Button,
-                Timestamp = _stopwatch.ElapsedMilliseconds
-            });
+                _macroEvents.Add(new MacroEvent
+                {
+                    EventType = MacroEventType.MouseUp,
+                    KeyCode = (int)e.Button,
+                    Timestamp = _stopwatch.ElapsedMilliseconds
+                });
+            }
         }
 
         private void OnKeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (!_isRecording) return;
-            _macroEvents.Add(new MacroEvent
+            lock (_macroEventsLock)
             {
-                EventType = MacroEventType.KeyDown,
-                KeyCode = (int)e.KeyCode,
-                Timestamp = _stopwatch.ElapsedMilliseconds
-            });
+                _macroEvents.Add(new MacroEvent
+                {
+                    EventType = MacroEventType.KeyDown,
+                    KeyCode = (int)e.KeyCode,
+                    Timestamp = _stopwatch.ElapsedMilliseconds
+                });
+            }
         }
 
         private void OnKeyUp(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (!_isRecording) return;
-            _macroEvents.Add(new MacroEvent
+            lock (_macroEventsLock)
             {
-                EventType = MacroEventType.KeyUp,
-                KeyCode = (int)e.KeyCode,
-                Timestamp = _stopwatch.ElapsedMilliseconds
-            });
+                _macroEvents.Add(new MacroEvent
+                {
+                    EventType = MacroEventType.KeyUp,
+                    KeyCode = (int)e.KeyCode,
+                    Timestamp = _stopwatch.ElapsedMilliseconds
+                });
+            }
         }
 
         public List<MacroEvent> GetMacroEvents()
         {
-            return new List<MacroEvent>(_macroEvents);
+            lock (_macroEventsLock)
+            {
+                return new List<MacroEvent>(_macroEvents);
+            }
         }
 
         public void SaveMacro(string filePath, List<MacroEvent> events)
@@ -167,6 +197,17 @@ namespace AutoPilotX.Services
         {
             var json = System.IO.File.ReadAllText(filePath);
             return System.Text.Json.JsonSerializer.Deserialize<List<MacroEvent>>(json);
+        }
+
+        public void Dispose()
+        {
+            _globalHook.MouseMove -= OnMouseMove;
+            _globalHook.MouseDown -= OnMouseDown;
+            _globalHook.MouseUp -= OnMouseUp;
+            _globalHook.KeyDown -= OnKeyDown;
+            _globalHook.KeyUp -= OnKeyUp;
+            _globalHook.Dispose();
+            _cancellationTokenSource?.Dispose();
         }
     }
 }

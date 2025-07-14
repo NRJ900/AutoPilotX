@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using WindowsInput;
@@ -5,7 +6,7 @@ using WindowsInput.Native;
 
 namespace AutoPilotX.Services
 {
-    public class ClickerService
+    public class ClickerService : IDisposable
     {
         private readonly InputSimulator _inputSimulator;
         private CancellationTokenSource _cancellationTokenSource;
@@ -24,7 +25,14 @@ namespace AutoPilotX.Services
             {
                 while (!token.IsCancellationRequested)
                 {
-                    _inputSimulator.Mouse.Click(mouseButton);
+                    try
+                    {
+                        _inputSimulator.Mouse.Click(mouseButton);
+                    }
+                    catch (Exception)
+                    {
+                        // Ignore input simulation errors
+                    }
                     await Task.Delay(interval, token);
                 }
             }, token);
@@ -33,6 +41,11 @@ namespace AutoPilotX.Services
         public void StopClicking()
         {
             _cancellationTokenSource?.Cancel();
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource?.Dispose();
         }
     }
 }

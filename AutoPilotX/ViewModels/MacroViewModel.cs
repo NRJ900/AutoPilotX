@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -10,24 +11,29 @@ using Microsoft.Win32;
 
 namespace AutoPilotX.ViewModels
 {
-    public partial class MacroViewModel : ObservableObject
+    public partial class MacroViewModel : ObservableObject, IDisposable
     {
         private readonly MacroService _macroService;
-
-        [ObservableProperty]
-        private string _macroName;
+        private bool _disposed;
 
         [ObservableProperty]
         private ObservableCollection<MacroEvent> _macroEvents;
 
-        public MacroViewModel()
+        [ObservableProperty]
+        private bool _isRecording;
+
+        [ObservableProperty]
+        private bool _isPlaying;
+
+        public MacroViewModel(MacroService macroService)
         {
-            _macroService = new MacroService();
-            StartRecordingCommand = new RelayCommand(StartRecording);
-            StopRecordingCommand = new RelayCommand(StopRecording);
-            PlayMacroCommand = new RelayCommand(PlayMacro);
-            SaveMacroCommand = new RelayCommand(SaveMacro);
-            LoadMacroCommand = new RelayCommand(LoadMacro);
+            _macroService = macroService;
+            StartRecordingCommand = new RelayCommand(StartRecording, () => !IsRecording && !IsPlaying);
+            StopRecordingCommand = new RelayCommand(StopRecording, () => IsRecording);
+            PlayMacroCommand = new RelayCommand(PlayMacro, () => !IsRecording && !IsPlaying && MacroEvents?.Count > 0);
+            SaveMacroCommand = new RelayCommand(SaveMacro, () => !IsRecording && !IsPlaying && MacroEvents?.Count > 0);
+            LoadMacroCommand = new RelayCommand(LoadMacro, () => !IsRecording && !IsPlaying);
+            ClearMacroCommand = new RelayCommand(ClearMacro, () => !IsRecording && !IsPlaying && MacroEvents?.Count > 0);
         }
 
         public ICommand StartRecordingCommand { get; }
@@ -35,21 +41,26 @@ namespace AutoPilotX.ViewModels
         public ICommand PlayMacroCommand { get; }
         public ICommand SaveMacroCommand { get; }
         public ICommand LoadMacroCommand { get; }
+        public ICommand ClearMacroCommand { get; }
 
         private void StartRecording()
         {
+            IsRecording = true;
             _macroService.StartRecording();
         }
 
         private void StopRecording()
         {
+            IsRecording = false;
             _macroService.StopRecording();
             MacroEvents = new ObservableCollection<MacroEvent>(_macroService.GetMacroEvents());
         }
 
         private async void PlayMacro()
         {
+            IsPlaying = true;
             await _macroService.PlayMacro(new List<MacroEvent>(MacroEvents));
+            IsPlaying = false;
         }
 
         private void SaveMacro()
@@ -79,5 +90,19 @@ namespace AutoPilotX.ViewModels
                 MacroEvents = new ObservableCollection<MacroEvent>(_macroService.LoadMacro(openFileDialog.FileName));
             }
         }
+
+        private void ClearMacro()
+        {
+            MacroEvents.Clear();
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _macroService.Dispose();
+            _disposed = true;
+        }
+
+        ~MacroViewModel() => Dispose();
     }
 }
