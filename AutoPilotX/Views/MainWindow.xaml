@@ -19,8 +19,8 @@
             <Button Content="AutoPilotX" IsEnabled="False"/>
         </mah:WindowCommands>
     </mah:MetroWindow.LeftWindowCommands>
-    <Grid>
-        <tb:TaskbarIcon x:Name="NotifyIcon"
+    <mah:MetroWindow.Resources>
+        <tb:TaskbarIcon x:Key="NotifyIcon"
                         IconSource="/Resources/Icons/icon.ico"
                         ToolTipText="AutoPilotX"
                         TrayMouseDoubleClick="NotifyIcon_TrayMouseDoubleClick">
@@ -31,22 +31,22 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TabControl Grid.Column="0" Style="{StaticResource MahApps.Styles.TabControl.Animated}" TabStripPlacement="Left">
-                <TabItem Header="Auto Clicker">
-                    <local:AutoClickerView/>
-                </TabItem>
-                <TabItem Header="Macro Recorder">
-                    <local:MacroView/>
-                </TabItem>
-                <TabItem Header="Settings">
-                    <local:SettingsView/>
-                </TabItem>
-            </TabControl>
-        </Grid>
+    </mah:MetroWindow.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.Column="0" Style="{StaticResource MahApps.Styles.TabControl.Animated}" TabStripPlacement="Left">
+            <TabItem Header="Auto Clicker">
+                <local:AutoClickerView/>
+            </TabItem>
+            <TabItem Header="Macro Recorder">
+                <local:MacroView/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <local:SettingsView/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </mah:MetroWindow>
