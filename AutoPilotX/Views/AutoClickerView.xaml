@@ -1,0 +1,22 @@
+<UserControl x:Class="AutoPilotX.Views.AutoClickerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AutoPilotX.Views"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:viewModels="clr-namespace:AutoPilotX.ViewModels"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewModels:AutoClickerViewModel/>
+    </UserControl.DataContext>
+    <StackPanel Margin="20">
+        <mah:ToggleSwitch Header="Enable Auto Clicker" IsOn="{Binding IsEnabled}" />
+        <ComboBox ItemsSource="{Binding ClickTypes}" SelectedItem="{Binding SelectedClickType}" Margin="0,10,0,0" />
+        <mah:NumericUpDown Value="{Binding Interval}" Minimum="1" Interval="1" StringFormat="N0" Margin="0,10,0,0" />
+        <Button Content="Start" Command="{Binding StartClickerCommand}" Margin="0,10,0,0" />
+        <Button Content="Stop" Command="{Binding StopClickerCommand}" Margin="0,10,0,0" />
+        <Ellipse Width="20" Height="20" Fill="{Binding StatusColor}" Margin="0,10,0,0}" />
+    </StackPanel>
+</UserControl>

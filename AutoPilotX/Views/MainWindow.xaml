@@ -1,0 +1,51 @@
+<mah:MetroWindow x:Class="AutoPilotX.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:AutoPilotX.Views"
+        xmlns:viewModels="clr-namespace:AutoPilotX.ViewModels"
+        mc:Ignorable="d"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        Title="AutoPilotX" Height="600" Width="800"
+        StateChanged="MetroWindow_StateChanged"
+        GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+        ResizeMode="CanResizeWithGrip">
+    <mah:MetroWindow.DataContext>
+        <viewModels:MainViewModel/>
+    </mah:MetroWindow.DataContext>
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Button Content="AutoPilotX" IsEnabled="False"/>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+    <tb:TaskbarIcon x:Name="NotifyIcon"
+                    IconSource="/Resources/Icons/icon.ico"
+                    ToolTipText="AutoPilotX"
+                    TrayMouseDoubleClick="NotifyIcon_TrayMouseDoubleClick">
+        <tb:TaskbarIcon.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Open" Click="Open_Click"/>
+                <MenuItem Header="Exit" Click="Exit_Click"/>
+            </ContextMenu>
+        </tb:TaskbarIcon.ContextMenu>
+    </tb:TaskbarIcon>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.Column="0" Style="{StaticResource MahApps.Styles.TabControl.Animated}" TabStripPlacement="Left">
+            <TabItem Header="Auto Clicker">
+                <local:AutoClickerView/>
+            </TabItem>
+            <TabItem Header="Macro Recorder">
+                <local:MacroView/>
+            </TabItem>
+            <TabItem Header="Settings">
+                <local:SettingsView/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</mah:MetroWindow>
