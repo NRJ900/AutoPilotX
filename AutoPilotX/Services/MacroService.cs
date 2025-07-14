@@ -4,15 +4,15 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoPilotX.Models;
-using InputSimulator;
-using InputSimulator.Native;
 using MouseKeyHook;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace AutoPilotX.Services
 {
     public class MacroService : IDisposable
     {
-        private readonly IKeyboardMouseEvents _globalHook = Hook.AppEvents();
+        private readonly IKeyboardMouseEvents _globalHook = Hook.GlobalEvents();
         private readonly IInputSimulator _inputSimulator = new InputSimulator();
         private readonly List<MacroEvent> _macroEvents;
         private readonly object _macroEventsLock = new object();

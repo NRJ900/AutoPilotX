@@ -1,8 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using InputSimulator;
-using InputSimulator.Native;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace AutoPilotX.Services
 {
