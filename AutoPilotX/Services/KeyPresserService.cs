@@ -2,20 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using WindowsInput;
-using WindowsInput.Native;
+using InputSimulator;
+using InputSimulator.Native;
 
 namespace AutoPilotX.Services
 {
     public class KeyPresserService : IDisposable
     {
-        private readonly IInputSimulator _inputSimulator;
+        private readonly IInputSimulator _inputSimulator = new InputSimulator();
         private CancellationTokenSource _cancellationTokenSource;
-
-        public KeyPresserService()
-        {
-            _inputSimulator = new InputSimulator();
-        }
 
         public async Task StartPressing(IEnumerable<VirtualKeyCode> keys, int delay)
         {

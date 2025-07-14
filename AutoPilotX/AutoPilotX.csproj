@@ -2,29 +2,32 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources/Icons/icon.ico</ApplicationIcon>
     <Nullable>enable</Nullable>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="InputSimulator" Version="2.0.0" />
+    <PackageReference Include="InputSimulatorCore" Version="1.0.4" />
+    <PackageReference Include="MouseKeyHook" Version="5.6.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
+    <PackageReference Include="MahApps.Metro" Version="3.0.0-alpha0457" />
     <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
     <PackageReference Include="MaterialDesignThemes.MahApps" Version="1.0.0" />
-    <PackageReference Include="WindowsInput" Version="1.0.6" />
-    <PackageReference Include="MouseKeyHook" Version="5.6.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Icons\icon.ico" />
+    <Resource Include="Resources/Icons/icon.ico" />
   </ItemGroup>
 
 </Project>

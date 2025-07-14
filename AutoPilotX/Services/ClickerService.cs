@@ -1,20 +1,15 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using WindowsInput;
-using WindowsInput.Native;
+using InputSimulator;
+using InputSimulator.Native;
 
 namespace AutoPilotX.Services
 {
     public class ClickerService : IDisposable
     {
-        private readonly IInputSimulator _inputSimulator;
+        private readonly IInputSimulator _inputSimulator = new InputSimulator();
         private CancellationTokenSource _cancellationTokenSource;
-
-        public ClickerService()
-        {
-            _inputSimulator = new InputSimulator();
-        }
 
         public async Task StartClicking(int interval, VirtualKeyCode mouseButton)
         {
