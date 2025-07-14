@@ -13,7 +13,7 @@ namespace AutoPilotX.Services
     public class MacroService : IDisposable
     {
         private readonly IKeyboardMouseEvents _globalHook;
-        private readonly InputSimulator _inputSimulator;
+        private readonly IInputSimulator _inputSimulator;
         private readonly List<MacroEvent> _macroEvents;
         private readonly object _macroEventsLock = new object();
         private readonly Stopwatch _stopwatch;

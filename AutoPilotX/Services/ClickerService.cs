@@ -8,7 +8,7 @@ namespace AutoPilotX.Services
 {
     public class ClickerService : IDisposable
     {
-        private readonly InputSimulator _inputSimulator;
+        private readonly IInputSimulator _inputSimulator;
         private CancellationTokenSource _cancellationTokenSource;
 
         public ClickerService()
@@ -27,7 +27,7 @@ namespace AutoPilotX.Services
                 {
                     try
                     {
-                        _inputSimulator.Mouse.Click(mouseButton);
+                        _inputSimulator.Mouse.MouseClick(mouseButton);
                     }
                     catch (Exception)
                     {

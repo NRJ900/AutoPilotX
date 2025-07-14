@@ -37,7 +37,7 @@ namespace AutoPilotX
             var mainWindow = new MainWindow(
                 _host.Services.GetRequiredService<MainViewModel>(),
                 _host.Services.GetRequiredService<AutoClickerViewModel>(),
-                _host.Services.GetRequiredVewModel<MacroViewModel>(),
+                _host.Services.GetRequiredService<MacroViewModel>(),
                 _host.Services.GetRequiredService<SettingsViewModel>()
             );
             mainWindow.Show();

@@ -9,7 +9,7 @@ namespace AutoPilotX.Services
 {
     public class KeyPresserService : IDisposable
     {
-        private readonly InputSimulator _inputSimulator;
+        private readonly IInputSimulator _inputSimulator;
         private CancellationTokenSource _cancellationTokenSource;
 
         public KeyPresserService()
