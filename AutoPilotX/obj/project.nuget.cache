@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "dgSpecHash": "kXmJdyOgs87cZbWaSFg9LGRS2funvK261mrOg1jLJUDKgYhhc8tRDGMH99iNmvu6jYJCR6ZeU99eENFP8qhyeA==",
+  "success": false,
+  "projectFilePath": "/app/AutoPilotX/AutoPilotX.csproj",
+  "expectedPackageFiles": [
+    "/home/jules/.nuget/packages/communitytoolkit.mvvm/8.2.2/communitytoolkit.mvvm.8.2.2.nupkg.sha512",
+    "/home/jules/.nuget/packages/controlzex/4.4.0/controlzex.4.4.0.nupkg.sha512",
+    "/home/jules/.nuget/packages/mahapps.metro/2.4.10/mahapps.metro.2.4.10.nupkg.sha512",
+    "/home/jules/.nuget/packages/microsoft.xaml.behaviors.wpf/1.1.19/microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512",
+    "/home/jules/.nuget/packages/system.text.json/4.7.2/system.text.json.4.7.2.nupkg.sha512",
+    "/home/jules/.nuget/packages/windowsinput/6.0.0/windowsinput.6.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "AutoPilotX depends on WindowsInput (>= 1.0.4) but WindowsInput 1.0.4 was not found. An approximate best match of WindowsInput 6.0.0 was resolved.",
+      "libraryId": "WindowsInput",
+      "targetGraphs": [
+        "net8.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package Gma.System.MouseKeyHook. No packages exist with this id in source(s): nuget.org",
+      "libraryId": "Gma.System.MouseKeyHook",
+      "targetGraphs": [
+        "net8.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1101",
+      "level": "Error",
+      "message": "Unable to find package MaterialDesignInXaml.MahApps. No packages exist with this id in source(s): nuget.org",
+      "libraryId": "MaterialDesignInXaml.MahApps",
+      "targetGraphs": [
+        "net8.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'WindowsInput 6.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "WindowsInput",
+      "targetGraphs": [
+        "net8.0-windows7.0"
+      ]
+    }
+  ]
+}
