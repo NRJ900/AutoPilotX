@@ -42,8 +42,8 @@ class MacroController:
             self.view.macroNameLineEdit.clear()
 
     def load_macros(self):
-        if not os.path.exists("AutoPilotX-Py/data/saved_macros"):
-            os.makedirs("AutoPilotX-Py/data/saved_macros")
-        for file in os.listdir("AutoPilotX-Py/data/saved_macros"):
+        if not os.path.exists("data/saved_macros"):
+            os.makedirs("data/saved_macros")
+        for file in os.listdir("data/saved_macros"):
             if file.endswith(".json"):
                 self.view.macroListWidget.addItem(file.replace(".json", ""))

@@ -5,5 +5,5 @@ from controllers.clicker_controller import ClickerController
 class ClickerView(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi("AutoPilotX-Py/ui/clicker_view.ui", self)
+        uic.loadUi("ui/clicker_view.ui", self)
         self.controller = ClickerController(self)

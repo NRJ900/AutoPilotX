@@ -94,11 +94,11 @@ class MacroService:
         self.playing = False
 
     def save(self, name, events):
-        with open(f"AutoPilotX-Py/data/saved_macros/{name}.json", "w") as f:
+        with open(f"data/saved_macros/{name}.json", "w") as f:
             json.dump(events, f)
 
     def load(self, name):
-        with open(f"AutoPilotX-Py/data/saved_macros/{name}.json", "r") as f:
+        with open(f"data/saved_macros/{name}.json", "r") as f:
             return json.load(f)
 
     def parse_key(self, key_str):

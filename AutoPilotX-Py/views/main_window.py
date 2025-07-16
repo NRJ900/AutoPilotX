@@ -10,7 +10,7 @@ from views.settings_view import SettingsView
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi("AutoPilotX-Py/ui/main_window.ui", self)
+        uic.loadUi("ui/main_window.ui", self)
         self.dark_theme = True
         self.load_theme()
         self.actionTheme.triggered.connect(self.toggle_theme)
@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
         self.listWidget.currentRowChanged.connect(self.stackedWidget.setCurrentIndex)
 
         self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(QIcon("AutoPilotX-Py/resources/icon.png"))
+        self.tray_icon.setIcon(QIcon("resources/icon.png"))
         self.tray_icon.setToolTip("AutoPilotX")
 
         show_action = QAction("Show", self)
@@ -47,7 +47,7 @@ class MainWindow(QMainWindow):
 
     def load_theme(self):
         if self.dark_theme:
-            with open("AutoPilotX-Py/ui/style.qss", "r") as f:
+            with open("ui/style.qss", "r") as f:
                 self.setStyleSheet(f.read())
         else:
             self.setStyleSheet("")
