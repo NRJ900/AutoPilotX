@@ -1,0 +1,78 @@
+/* Dark Theme */
+QWidget {
+    background-color: #2e2e2e;
+    color: #ffffff;
+    border: none;
+    font-size: 14px;
+}
+
+QMainWindow {
+    background-color: #2e2e2e;
+}
+
+QListWidget {
+    background-color: #3c3c3c;
+    border: 1px solid #4a4a4a;
+    padding: 5px;
+}
+
+QListWidget::item {
+    padding: 10px;
+}
+
+QListWidget::item:selected {
+    background-color: #4a4a4a;
+}
+
+QStackedWidget {
+    background-color: #2e2e2e;
+}
+
+QPushButton {
+    background-color: #4a4a4a;
+    color: #ffffff;
+    border: 1px solid #5a5a5a;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+QPushButton:hover {
+    background-color: #5a5a5a;
+}
+
+QPushButton:pressed {
+    background-color: #6a6a6a;
+}
+
+QLineEdit, QTextEdit, QSpinBox, QDoubleSpinBox, QComboBox {
+    background-color: #3c3c3c;
+    color: #ffffff;
+    border: 1px solid #4a4a4a;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+QLabel {
+    color: #ffffff;
+}
+
+QCheckBox {
+    color: #ffffff;
+}
+
+QRadioButton {
+    color: #ffffff;
+}
+
+QGroupBox {
+    border: 1px solid #4a4a4a;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 0 3px;
+}
