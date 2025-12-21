@@ -5,3 +5,23 @@
 body {
   @apply bg-background text-white font-sans overflow-hidden;
 }
+
+/* Custom Scrollbar */
+@layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}

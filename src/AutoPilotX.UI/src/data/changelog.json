@@ -1,0 +1,54 @@
+{
+    "currentVersion": "1.0.0",
+    "releases": [
+        {
+            "version": "1.0.0",
+            "date": "2025-12-22",
+            "badge": "Current",
+            "features": [
+                {
+                    "title": "Welcome to AutoPilotX",
+                    "icon": "Settings",
+                    "color": "text-white-400",
+                    "description": "Experience the next level of automation. AutoPilotX blends advanced macro capabilities with intelligent, human-like behavior to streamline your tasks with precision and stealth"
+                },
+                {
+                    "title": "Human-Like Movement",
+                    "icon": "MousePointer2",
+                    "color": "text-orange-400",
+                    "description": "New Bezier curve algorithm mimics natural hand movements to avoid detection."
+                },
+                {
+                    "title": "Mini-Overlay Mode",
+                    "icon": "Monitor",
+                    "color": "text-blue-400",
+                    "description": "Collapse the app into a tiny widget for easy monitoring. Double-click to expand."
+                },
+                {
+                    "title": "Sound & Polish",
+                    "icon": "Moon",
+                    "color": "text-purple-400",
+                    "description": "Custom sound engine with volume control and standardized UI components."
+                }
+            ]
+        }
+    ],
+    "upcoming": [
+        "Smart Vision (Color Detection/Image Search)",
+        "Advanced Macro Logic (If/Else, Loops)",
+        "Cloud Sync & Scripting Support"
+    ],
+    "suggestions": [
+        {
+            "text": "Any improvement for the app is always welcomed :)"
+        },
+        {
+            "text": "Use this link to provide your idea.",
+            "link": "https://github.com/NRJ900/AutoPilotX/discussions/1"
+        },
+        {
+            "text": "Found a bug? Report it here.",
+            "link": "https://github.com/NRJ900/AutoPilotX/issues"
+        }
+    ]
+}
