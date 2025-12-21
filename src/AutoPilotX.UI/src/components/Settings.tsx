@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Settings, Info, Monitor, Moon } from 'lucide-react';
+import { Settings, Info, Monitor, Moon, MousePointer2, FileText } from 'lucide-react';
 import { clsx } from 'clsx';
 import { AppSettings } from '../types';
 
@@ -56,14 +56,48 @@ export default function SettingsPanel({ settings, onUpdate }: SettingsPanelProps
                         <Moon size={20} className="text-purple-400" /> Sound
                     </h3>
 
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <div className="font-medium text-white">Sound Effects</div>
-                            <div className="text-sm text-gray-500">Play sounds on start/stop</div>
-                        </div>
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-gray-300">Sound Effects</span>
                         <Toggle
                             checked={settings.SoundEffects}
                             onChange={v => updateSetting('SoundEffects', v)}
+                        />
+                    </div>
+
+                    {settings.SoundEffects && (
+                        <div className="mb-4 px-2">
+                            <div className="flex justify-between text-xs text-gray-400 mb-1">
+                                <span>Volume</span>
+                                <span>{settings.SoundVolume || 50}%</span>
+                            </div>
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                className="w-full h-2 bg-surface-light rounded-lg appearance-none cursor-pointer accent-primary"
+                                value={settings.SoundVolume || 50}
+                                onChange={(e) => updateSetting('SoundVolume', parseInt(e.target.value))}
+                            />
+                        </div>
+                    )}
+                </div>
+
+                {/* Automation */}
+                <div className="bg-surface border border-white/10 rounded-xl p-6 space-y-6">
+                    <h3 className="font-bold text-lg flex items-center gap-2 text-white">
+                        <MousePointer2 size={20} className="text-orange-400" /> Automation
+                    </h3>
+
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <div className="font-medium text-white flex items-center gap-2">
+                                Human-Like Mouse <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded">Beta</span>
+                            </div>
+                            <div className="text-sm text-gray-500">Smooth, curved cursor movements</div>
+                        </div>
+                        <Toggle
+                            checked={settings.HumanLikeMouseMovement}
+                            onChange={v => updateSetting('HumanLikeMouseMovement', v)}
                         />
                     </div>
                 </div>
@@ -80,10 +114,48 @@ export default function SettingsPanel({ settings, onUpdate }: SettingsPanelProps
                     </div>
                 </div>
 
+                <ReleaseNotes />
             </div>
 
             {/* Updates Section */}
             <UpdateCheck />
+        </div>
+    );
+}
+
+function ReleaseNotes() {
+    return (
+        <div className="bg-surface border border-white/10 rounded-xl p-6 space-y-4 md:col-span-2">
+            <h3 className="font-bold text-lg flex items-center gap-2 text-white">
+                <FileText size={20} className="text-yellow-400" /> Release Notes
+            </h3>
+            <div className="space-y-6">
+                {/* Latest */}
+                <div className="relative pl-4 border-l-2 border-primary/30">
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="font-bold text-white">v1.2.0</span>
+                        <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded">Current</span>
+                    </div>
+                    <ul className="text-sm text-gray-400 space-y-1">
+                        <li>• <span className="text-gray-300">Human-Like Mouse</span>: Smooth, natural cursor curves.</li>
+                        <li>• <span className="text-gray-300">Mini-Overlay Mode</span>: Compact widget for multitasking.</li>
+                        <li>• <span className="text-gray-300">Sound Effects</span>: Audio feedback with volume control.</li>
+                        <li>• <span className="text-gray-300">Visual Polish</span>: Enhanced UI consistency and animations.</li>
+                    </ul>
+                </div>
+
+                {/* Upcoming */}
+                <div className="relative pl-4 border-l-2 border-gray-700">
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-gray-400">Upcoming Features</span>
+                    </div>
+                    <ul className="text-sm text-gray-500 space-y-1">
+                        <li>• Smart Vision (Color Detection)</li>
+                        <li>• Advanced Macro Logic (If/Else, Loops)</li>
+                        <li>• Cloud Sync & Scripting</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     );
 }
@@ -134,13 +206,13 @@ function Toggle({ checked, onChange }: { checked: boolean, onChange: (v: boolean
         <button
             onClick={() => onChange(!checked)}
             className={clsx(
-                "w-12 h-6 rounded-full relative transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary/50",
+                "w-11 h-6 rounded-full relative transition-colors duration-200 ease-in-out focus:outline-none",
                 checked ? "bg-primary" : "bg-white/10"
             )}
         >
             <div className={clsx(
-                "w-4 h-4 rounded-full bg-white absolute top-1 transition-all duration-200 shadow-sm",
-                checked ? "left-7" : "left-1"
+                "w-5 h-5 rounded-full bg-white absolute top-0.5 left-0.5 transition-transform duration-200 shadow-sm",
+                checked ? "translate-x-full" : "translate-x-0"
             )} />
         </button>
     );

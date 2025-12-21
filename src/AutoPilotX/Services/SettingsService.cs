@@ -11,6 +11,8 @@ namespace AutoPilotX.Services
         public bool MinimizeToTray { get; set; } = false;
         public string Theme { get; set; } = "Dark";
         public bool SoundEffects { get; set; } = true;
+        public int SoundVolume { get; set; } = 50; // 0-100
+        public bool HumanLikeMouseMovement { get; set; } = false;
     }
 
     public class SettingsService

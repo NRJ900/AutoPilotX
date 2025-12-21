@@ -21,11 +21,13 @@ namespace AutoPilotX.Services
 
         private readonly IInputSimulator _inputSim;
         private readonly SoundService? _soundService;
+        private readonly MouseMovementService? _movementService;
         
-        public MacroService(SoundService? soundService = null)
+        public MacroService(SoundService? soundService = null, MouseMovementService? movementService = null)
         {
             _inputSim = new InputSimulatorWrapper();
             _soundService = soundService;
+            _movementService = movementService;
             LoadMacros();
             MacrosChanged += (s, e) => SaveMacros();
         }
@@ -106,12 +108,19 @@ namespace AutoPilotX.Services
                         switch (action.Type)
                         {
                             case MacroActionType.MouseMove:
-                                _inputSim.MoveMouse(action.X + offsetX, action.Y + offsetY);
+                                if (_movementService != null)
+                                    _movementService.MoveMouse(action.X + offsetX, action.Y + offsetY);
+                                else
+                                    _inputSim.MoveMouse(action.X + offsetX, action.Y + offsetY);
                                 break;
                             case MacroActionType.MouseClick:
                                 // Click likely relies on current position if X/Y not specified in action?
-                                // Our MacroAction.Click stores X,Y.
-                                _inputSim.MoveMouse(action.X + offsetX, action.Y + offsetY); // Ensure move
+                                // If X,Y provided, move there first.
+                                if (_movementService != null)
+                                     _movementService.MoveMouse(action.X + offsetX, action.Y + offsetY);
+                                else 
+                                     _inputSim.MoveMouse(action.X + offsetX, action.Y + offsetY);
+
                                 _inputSim.Click(action.Button);
                                 break;
                             case MacroActionType.KeyDown:

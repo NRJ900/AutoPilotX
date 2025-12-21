@@ -31,6 +31,7 @@ export interface Bridge {
     CancelRecording(): void;
 
     PlayMacro(name: string): void;
+    StopMacro(): void;
     DeleteMacro(name: string): void;
     UpdateMacro(json: string): void;
     CreateMacro(name: string): void;
@@ -56,6 +57,11 @@ export interface Bridge {
     // Updates
     CheckUpdates(): Promise<string>;
     OpenUpdateUrl(url: string): void;
+
+    // Window
+    SetWindowMode(isMini: boolean): void;
+    DragWindow(): void;
+    GetDetailedStatus(): Promise<string>;
 }
 
 export interface AppSettings {
@@ -63,6 +69,8 @@ export interface AppSettings {
     MinimizeToTray: boolean;
     Theme: string;
     SoundEffects: boolean;
+    SoundVolume: number;
+    HumanLikeMouseMovement: boolean;
 }
 
 export interface HotkeyDefinition {

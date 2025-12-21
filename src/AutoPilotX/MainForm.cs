@@ -36,10 +36,13 @@ namespace AutoPilotX
             // Restore Services
             _settingsService = new SettingsService();
             var soundService = new SoundService(_settingsService); // New
+            var inputSim = new InputSimulatorWrapper(); // Shared
             
             _autoClicker = new AutoClickerService(soundService);
             _hotkey = new HotkeyService();
-            _macro = new MacroService(soundService);
+            
+            var movement = new MouseMovementService(_settingsService, inputSim);
+            _macro = new MacroService(soundService, movement);
             
             _statsService = new StatsService(_autoClicker, _macro);
             _profileService = new ProfileService(_macro, _hotkey, _statsService, _settingsService);
@@ -143,7 +146,31 @@ namespace AutoPilotX
                     }
                 };
 
-                _bridge = new Bridge(_autoClicker, _hotkey, _macro, _statsService, _profileService, _settingsService, EmitEvent);
+                _bridge = new Bridge(_autoClicker, _hotkey, _macro, _statsService, _profileService, _settingsService, EmitEvent, 
+                (isMini) => {
+                    this.Invoke((MethodInvoker)delegate {
+                        if (isMini)
+                        {
+                            this.ClientSize = new Size(320, 60);
+                            this.FormBorderStyle = FormBorderStyle.None; // Make it look like a floating bar
+                            this.TopMost = true; // Always on top in mini mode
+                        }
+                        else
+                        {
+                            this.ClientSize = new Size(1000, 600);
+                            this.FormBorderStyle = FormBorderStyle.Sizable;
+                            this.TopMost = _settingsService.Settings.AlwaysOnTop; // Restore setting
+                        }
+                    });
+                },
+                () => {
+                    // Native Drag
+                    this.Invoke((MethodInvoker)delegate {
+                        ReleaseCapture();
+                        SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                    });
+                });
+                
                 _webView.CoreWebView2.AddHostObjectToScript("bridge", _bridge);
                 
                 // Enable DevTools
@@ -233,6 +260,15 @@ namespace AutoPilotX
                 catch { /* Ignore updates if view is closing */ }
             }
         }
+
+        // P/Invoke for Dragging
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
 
         private void InitializeComponent()
         {

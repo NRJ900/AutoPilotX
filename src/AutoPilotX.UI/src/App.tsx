@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MousePointer2, Keyboard, Command, Settings, BarChart3, Folder, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MousePointer2, Keyboard, Command, Settings, BarChart3, Folder, ChevronLeft, ChevronRight, Minimize2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { motion, AnimatePresence } from 'framer-motion';
 import AutoClicker from './components/AutoClicker';
@@ -8,16 +8,20 @@ import HotkeyManager from './components/HotkeyManager';
 import Stats from './components/Stats';
 import Profiles from './components/Profiles';
 import SettingsPanel from './components/Settings';
+import MiniOverlay from './components/MiniOverlay';
 import { AppSettings } from './types';
 
 function App() {
     const [activeTab, setActiveTab] = useState('autoclicker');
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isMiniMode, setIsMiniMode] = useState(false);
     const [settings, setSettings] = useState<AppSettings>({
         AlwaysOnTop: true,
         MinimizeToTray: false,
         Theme: 'Dark',
-        SoundEffects: true
+        SoundEffects: true,
+        SoundVolume: 50,
+        HumanLikeMouseMovement: false
     });
 
     const bridge = window.chrome?.webview?.hostObjects?.bridge;
@@ -45,6 +49,14 @@ function App() {
         }
     };
 
+    const toggleMiniMode = () => {
+        const newMode = !isMiniMode;
+        setIsMiniMode(newMode);
+        if (bridge) {
+            bridge.SetWindowMode(newMode);
+        }
+    };
+
     const navItems = [
         { id: 'autoclicker', icon: MousePointer2, label: 'Auto Clicker' },
         { id: 'macros', icon: Command, label: 'Macros' },
@@ -53,6 +65,10 @@ function App() {
         { id: 'profiles', icon: Folder, label: 'Profiles' },
         { id: 'settings', icon: Settings, label: 'Settings' },
     ];
+
+    if (isMiniMode) {
+        return <MiniOverlay onExpand={toggleMiniMode} />;
+    }
 
     return (
         <div className="flex h-screen bg-background text-white select-none overflow-hidden">
@@ -124,6 +140,21 @@ function App() {
                             )}
                         </button>
                     ))}
+                </div>
+
+                {/* Mini Mode Toggle in Sidebar Footer */}
+                <div className="p-4 border-t border-white/5">
+                    <button
+                        onClick={toggleMiniMode}
+                        className={clsx(
+                            "flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all w-full",
+                            isCollapsed && "justify-center"
+                        )}
+                        title="Switch to Mini Mode"
+                    >
+                        <Minimize2 size={20} />
+                        {!isCollapsed && <span className="text-sm font-medium">Mini Mode</span>}
+                    </button>
                 </div>
             </motion.div>
 

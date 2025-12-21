@@ -21,6 +21,8 @@ namespace AutoPilotX
         private readonly SettingsService _settingsService;
         private readonly UpdateService _updateService;
         private readonly Action<string, object> _emitEvent;
+        private readonly Action<bool> _setMiniMode;
+        private readonly Action _dragWindow;
 
         public Bridge(
             AutoClickerService autoClicker, 
@@ -29,7 +31,9 @@ namespace AutoPilotX
             StatsService statsService,
             ProfileService profileService,
             SettingsService settingsService,
-            Action<string, object> emitEvent)
+            Action<string, object> emitEvent,
+            Action<bool> setMiniMode,
+            Action dragWindow)
         {
             _autoClicker = autoClicker;
             _hotkeyService = hotkeyService;
@@ -39,6 +43,8 @@ namespace AutoPilotX
             _settingsService = settingsService;
             _updateService = new UpdateService();
             _emitEvent = emitEvent;
+            _setMiniMode = setMiniMode;
+            _dragWindow = dragWindow;
 
             // Wire up events
             _autoClicker.Started += (s, e) => Emit("AutoClickerState", new { isRunning = true });
@@ -125,6 +131,11 @@ namespace AutoPilotX
                 // Play in background to not block UI
                 Task.Run(async () => await _macroService.StartMacro(macro));
             }
+        }
+
+        public void StopMacro()
+        {
+            _macroService.StopPlayback();
         }
 
         public void DeleteMacro(string name)
@@ -218,6 +229,23 @@ namespace AutoPilotX
         public void OpenUpdateUrl(string url)
         {
             _updateService.OpenDownloadPage(url);
+        }
+
+        public void SetWindowMode(bool isMini)
+        {
+            _setMiniMode?.Invoke(isMini);
+        }
+
+        public void DragWindow()
+        {
+            _dragWindow?.Invoke();
+        }
+
+        public string GetDetailedStatus()
+        {
+            if (_autoClicker.IsRunning) return "Auto Clicking...";
+            if (_macroService.IsPlaying) return $"Playing: {_macroService.CurrentPlayingMacro?.Name ?? "Macro"}";
+            return "Ready";
         }
     }
 }
