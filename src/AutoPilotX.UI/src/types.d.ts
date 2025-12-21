@@ -58,6 +58,13 @@ export interface Bridge {
     OpenUpdateUrl(url: string): void;
 }
 
+export interface AppSettings {
+    AlwaysOnTop: boolean;
+    MinimizeToTray: boolean;
+    Theme: string;
+    SoundEffects: boolean;
+}
+
 export interface HotkeyDefinition {
     Id: string;
     Description: string;

@@ -1,46 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Settings, Info, Monitor, Moon } from 'lucide-react';
 import { clsx } from 'clsx';
+import { AppSettings } from '../types';
 
-interface AppSettings {
-    AlwaysOnTop: boolean;
-    MinimizeToTray: boolean;
-    Theme: string;
-    SoundEffects: boolean;
+interface SettingsPanelProps {
+    settings: AppSettings;
+    onUpdate: (settings: AppSettings) => void;
 }
 
-export default function SettingsPanel() {
-    const [settings, setSettings] = useState<AppSettings>({
-        AlwaysOnTop: true,
-        MinimizeToTray: false,
-        Theme: 'Dark',
-        SoundEffects: true
-    });
-
-    const bridge = window.chrome?.webview?.hostObjects?.bridge;
-
-    useEffect(() => {
-        loadSettings();
-    }, []);
-
-    const loadSettings = async () => {
-        if (bridge) {
-            try {
-                const json = await bridge.GetSettings();
-                setSettings(JSON.parse(json));
-            } catch (err) {
-                console.error("Failed to load settings", err);
-            }
-        }
-    };
-
-    const updateSetting = async (key: keyof AppSettings, value: any) => {
-        const newSettings = { ...settings, [key]: value };
-        setSettings(newSettings);
-
-        if (bridge) {
-            await bridge.SaveSettings(JSON.stringify(newSettings));
-        }
+export default function SettingsPanel({ settings, onUpdate }: SettingsPanelProps) {
+    const updateSetting = (key: keyof AppSettings, value: any) => {
+        onUpdate({ ...settings, [key]: value });
     };
 
     return (
